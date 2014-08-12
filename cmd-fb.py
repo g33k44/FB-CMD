@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Name : Facebook From  Command line
 Author : Khaled Farah
@@ -5,14 +6,15 @@ Version : 0.0.1
 
 Date: 3/18/2014
 '''
-import mechanize , cookielib , sys 
+import mechanize , cookielib , sys, getpass 
 from bs4 import BeautifulSoup 
 br = mechanize.Browser()
+
 def login(br) : 
 	br.select_form(nr=0)
-	email = raw_input("[*] Please Enter your email :")
-	password = raw_input("[*] Please Enter your password :") 
-	br.form["email"]=email 
+	email = raw_input('Please Enter your email: ')
+	password = getpass.getpass('Please Enter your password: ') 
+	br.form["email"]= email 
 	br.form["pass"] = password
 	br.submit()
 
@@ -32,7 +34,7 @@ br.set_handle_referer(True)
 br.set_handle_robots(False)
 cj = cookielib.LWPCookieJar()
 br.set_cookiejar(cj)
-br.addheaders = [('User-agent',' Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0'),
+br.addheaders = [('User-agent',' Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/99.0'),
                  ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),
                  ('Accept-Encoding', 'gzip,deflate,sdch'),                  
                  ('Accept-Language', 'en-US,en;q=0.8'),                     
@@ -47,7 +49,7 @@ try :
 		res = br.response().read()
 except : 
 	print "[-] error connecting to Facebook , try again later " 
-	exit()
+	login(br)
 	
 
 print "[+] you are in "
@@ -91,14 +93,11 @@ while 1 :
 			br.reload() 
 	elif a=='b' : 
 		br.back() 
-	elif a=='e' : 
+	elif a=='e' :
+		#TODO: logout before closing the browser 
 		br.close()
 		exit()
 
 		
 	
 br.close()
-               
-
-       
-        
